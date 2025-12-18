@@ -1,4 +1,4 @@
-import Formulario from "./formulario";
+import Formulario from "./Formulario";
 
 export default function Main() {
     return (

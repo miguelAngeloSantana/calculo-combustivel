@@ -1,27 +1,161 @@
-import Form from "next/form"
+"use client"
+// import Form from "next/form";
+import ButtonMap from "./ButtonMap";
+import { submitForm } from "@/actions/actions";
+import { useState } from "react";
+
+import dynamic from "next/dynamic";
+
+interface Cidade {
+    id: number 
+    nome: string 
+    latitude: number 
+    longitude: number
+}
+
+const Map = dynamic(() => import("./Map"), {ssr: false});
 
 export default function Formulario() {
+    
+    const [origem, setOrigem] = useState<Cidade | null>(null);
+    const [destino, setDestino] = useState<Cidade | null>(null);
+
+    // Origem
+    const [query, setQuery] = useState("");
+    const [cidadeOrigem, setCidadeOrigem] = useState<Cidade[]>([]);
+
+    //Destino
+    const [queryDestiny, setQueryDestiny] = useState("");
+    const [cidadeDestino, setCidadeDestino] = useState<Cidade[]>([]);
+
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [indexMouse, setIndexMouse] = useState<number | null>(null)
+
+    async function selectCity(city: string): Promise<void>{
+        setQuery(city);
+        setOrigem(null);
+
+        if(city.length < 3) {
+            setCidadeOrigem([]);
+            return;
+        }
+
+        setLoading(true)
+
+        const newData = new FormData();
+        newData.append("pontoPartida", city);
+
+        const result = await submitForm(newData);
+        setCidadeOrigem(result.info);
+
+        setLoading(false)
+    }
+
+    function chooseCity(cidade: Cidade): void {
+        setOrigem(cidade);
+        setQuery(cidade.nome);
+        setCidadeOrigem([]);
+    }
+
+    async function selectCityDestiny(city: string): Promise<void>{
+        setQueryDestiny(city);
+        setDestino(null);
+
+        if(city.length < 3) {
+            setCidadeDestino([]);
+            return;
+        }
+
+        const newData = new FormData();
+        newData.append("pontoPartida", city);
+
+        const result = await submitForm(newData);
+        setCidadeDestino(result.info);
+    }
+
+    function chooseCityDestiny(cidade: Cidade): void {
+        setDestino(cidade);
+        setQueryDestiny(cidade.nome);
+        setCidadeDestino([]);
+    }
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+        e.preventDefault();
+    };
+
     return (
         <div className="flex flex-1 h-full">
-            <Form action={"/search"} className="w-full flex flex-col items-center justify-center">
+            <form onSubmit={handleSubmit} className="w-full flex flex-col items-center justify-center">
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
                     <label  className="mb-4">Digite o local de partida</label>
-                    <input type="text" name="pontoPartida" 
-                        placeholder="Ex. Petropolis, Caxambu, Rio de Janeiro" 
-                        style={{padding: '0.7rem 0.75rem', marginTop: ""}}
-                        className="bg-black rounded-sm"
-                        required 
+                    <input
+                        value={query}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            selectCity(e.target.value)
+                        }
+                        placeholder="Escolha uma cidade"
                     />
+
+                    { loading && <p>Carregando</p> }
+
+                    {
+                        cidadeOrigem.length > 0 && (
+                            <ul>
+                                {
+                                    cidadeOrigem.map((c) => (
+                                        <li 
+                                            key={c.id} 
+                                            onClick={() => chooseCity(c)}
+                                            onMouseOver={() => setIndexMouse(c.id)}
+                                            style={{
+                                                border: indexMouse === c.id? "1px solid #f0f0f0": "0px #141B29",
+                                                padding: "2px"
+                                            }}
+                                            className="cursor-pointer"
+                                        >
+                                            {c.nome}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        )
+                    }
                 </div>
 
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}} >
                     <label className="mb-4">Digite o local de Destino</label>
-                    <input type="text" name="ponto-final" 
-                        placeholder="Ex. Maracana, Rio de Janeiro" 
-                        style={{padding: '0.7rem 0.75rem', marginTop: ""}}
-                        className="bg-black rounded-sm"
-                        required 
+                    <input
+                        value={queryDestiny}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                            selectCityDestiny(e.target.value)
+                        }
+                        placeholder="Qaul o destino da viagem?"
                     />
+
+                   { loading && <p>Carregando</p> } 
+
+                    {
+                        cidadeDestino.length > 0 && (
+                            <ul>
+                                {
+                                    cidadeDestino.map((c) => (
+                                        <li 
+                                            key={c.id} 
+                                            onClick={() => chooseCityDestiny(c)}
+                                            onMouseOver={() => setIndexMouse(c.id)}
+                                            style={{
+                                                border: indexMouse === c.id? "1px solid #f0f0f0": "0px #141B29",
+                                                padding: "2px"
+                                            }}
+                                            className="cursor-pointer"
+                                        >
+                                            {c.nome}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        )
+                    }
                 </div>
 
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
@@ -56,10 +190,21 @@ export default function Formulario() {
                         />
                 </div>
 
-                <button>
-                    Calcular viagem
-                </button>
-            </Form>
+                {
+                    origem && destino && (
+                        <Map 
+                            latitude={origem.latitude} 
+                            longitude={origem?.longitude}
+                            latitudeDestino={destino?.latitude}
+                            longitudeDestino={destino?.longitude}
+                            
+                        />
+                        
+                    )
+                }
+               
+                <ButtonMap />
+            </form>
         </div>
     )
-}
+};
