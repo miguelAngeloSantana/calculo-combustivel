@@ -24,6 +24,12 @@
   --font-mono: var(--font-geist-mono);
 } */
 
+.leaflet-container {
+  height: 90vh;
+  width: 90%;
+  border-radius: 2rem;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #141B29;

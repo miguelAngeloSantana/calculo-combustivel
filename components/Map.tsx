@@ -60,7 +60,7 @@ export default function Map({ latitude, longitude, latitudeDestino, longitudeDes
   });
 
   return (
-    <MapContainer center={[latitude, longitude]} zoom={13} style={{height: "600px", width: "100vh"}}>
+    <MapContainer center={[latitude, longitude]} zoom={13} style={{marginTop: "0.8rem", marginBottom: "1rem"}}>
       <TileLayer
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

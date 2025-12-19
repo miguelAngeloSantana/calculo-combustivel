@@ -3,7 +3,7 @@ import Formulario from "./Formulario";
 export default function Main() {
     return (
         <div>
-            <div className="flex flex-col justify-center items-center" style={{margin: "2rem 0"}}>
+            <div className="flex flex-col justify-center items-center md:w-screen" style={{marginTop: "1.8rem"}}>
                 <h1 >Calculo de combustivel</h1>
                 <h2>Calcule o preço da sua viagem</h2>
             </div>

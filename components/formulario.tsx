@@ -11,11 +11,15 @@ interface Cidade {
     nome: string 
     latitude: number 
     longitude: number
-}
+};
 
 const Map = dynamic(() => import("./Map"), {ssr: false});
 
 export default function Formulario() {
+
+    const [ fuel, setFuel ] = useState<string>("");
+
+    const [ veiculoConsumo, setVeiculoConsumo ] = useState<number>(0)
     
     const [origem, setOrigem] = useState<Cidade | null>(null);
     const [destino, setDestino] = useState<Cidade | null>(null);
@@ -48,7 +52,9 @@ export default function Formulario() {
         const result = await submitForm(newData);
         setCidadeOrigem(result.info);
 
-        setLoading(false)
+        setLoading(false);
+
+        // console.log(result.combustivel);
     }
 
     function chooseCity(cidade: Cidade): void {
@@ -81,18 +87,23 @@ export default function Formulario() {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
+        console.log(fuel, veiculoConsumo);
     };
+
+
 
     return (
         <div className="flex flex-1 h-full">
             <form onSubmit={handleSubmit} className="w-full flex flex-col items-center justify-center">
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
-                    <label  className="mb-4">Digite o local de partida</label>
+                    <label className="mb-4">Digite o local de partida</label>
                     <input
                         value={query}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             selectCity(e.target.value)
                         }
+                        className="bg-black rounded-xl"
+                        style={{padding: '0.9rem 1rem', marginTop: "0.7rem"}}
                         placeholder="Escolha uma cidade"
                     />
 
@@ -129,6 +140,8 @@ export default function Formulario() {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
                             selectCityDestiny(e.target.value)
                         }
+                        className="bg-black rounded-xl"
+                        style={{padding: '0.9rem 1rem', marginTop: "0.7rem"}}
                         placeholder="Qaul o destino da viagem?"
                     />
 
@@ -160,11 +173,16 @@ export default function Formulario() {
 
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
                     <label style={{paddingBottom: "0.75rem", display: "block"}}>Qual combustivel o veiculo usa</label>
-                    <select required name="fuelOptions" 
+                    <select 
+                        required 
+                        name="fuelOptions" 
                         className="bg-black rounded-xl"
                         style={{padding: '1.2rem 1rem'}}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                            setFuel(e.target.value)
+                        }}
                     >
-                        <option className="bg-black">tipo de combustivel</option>
+                        <option value="" className="bg-black" hidden>tipo de combustivel</option>
                         <option value="Gasolina" className="bg-black">Gasolina (L)</option>
                         <option value="Etanol" className="bg-black">Etanol (L)</option>
                         <option value="Dielsel" className="bg-black">Dielse (L)</option>
@@ -173,10 +191,15 @@ export default function Formulario() {
 
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
                     <label className="mb-4">Consuno do veiculo</label>
-                    <input type="number" name="consumo" 
+                    <input 
+                        type="number" 
+                        name="consumo" 
                         placeholder="Qual o gasto de combustivel do seu veiculo" 
-                        style={{padding: '0.7rem 0.75rem', marginTop: ""}}
+                        style={{padding: '0.7rem 0.75rem', marginTop: "0.7rem"}}
                         className="bg-black rounded-sm"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setVeiculoConsumo(Number(e.target.value))
+                        }}
                         required
                     />
                 </div>
@@ -185,7 +208,7 @@ export default function Formulario() {
                     <label className="mb-4 text-sm md:text-base">Capacidade do tanque ( Opcional )</label>
                     <input type="number" name="capacidade" 
                         placeholder="Com isso, podemos calcular quantas paradas terá que fazer até o destino final"
-                        style={{padding: '0.7rem 0.75rem', marginTop: ""}}
+                        style={{padding: '0.7rem 0.75rem', marginTop: "0.7rem"}}
                         className="bg-black rounded-sm"
                         />
                 </div>
