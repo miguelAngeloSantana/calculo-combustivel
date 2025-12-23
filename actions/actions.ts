@@ -1,4 +1,6 @@
 "use server";
+// import puppeteer from "puppeteer";
+
 
 export interface Cidade {
     id: number 
@@ -6,6 +8,27 @@ export interface Cidade {
     latitude: number 
     longitude: number
 };
+
+// export async function RobotScraping({fuel}: String) {
+    
+//     const browser = await puppeteer.launch();
+//     const page = await browser.newPage();
+
+//     const url = `https://precos.petrobras.com.br/sele%C3%A7%C3%A3o-de-estados-${fuel}`
+//     await page.goto(url);
+
+//     const result = await page.evaluate(() => {
+//         return document.querySelector('#telafinal-precofinal.h1.real-value')?.textContent
+//     })
+
+//     console.log(result);
+
+//     await browser.close();
+
+//     return {
+//         info: result
+//     }
+// }
 
 export async function submitForm(formData: FormData) {
 

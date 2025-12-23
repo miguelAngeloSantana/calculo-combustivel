@@ -2,7 +2,10 @@
 // import Form from "next/form";
 import ButtonMap from "./ButtonMap";
 import { submitForm } from "@/actions/actions";
+import { BuscarPrecoCombustivel } from "@/actions/combustivelScraping";
 import { useState } from "react";
+
+import InfoLocation from "./InfoLocation"
 
 import dynamic from "next/dynamic";
 
@@ -19,7 +22,11 @@ export default function Formulario() {
 
     const [ fuel, setFuel ] = useState<string>("");
 
-    const [ veiculoConsumo, setVeiculoConsumo ] = useState<number>(0)
+    const [ price, setPrice ] = useState<string | null | undefined>("");
+
+    const [ veiculoConsumo, setVeiculoConsumo ] = useState<number>(0);
+
+    const [capacidadeTanque, setCapacidadeTanque] = useState<number>(0);
     
     const [origem, setOrigem] = useState<Cidade | null>(null);
     const [destino, setDestino] = useState<Cidade | null>(null);
@@ -33,7 +40,7 @@ export default function Formulario() {
     const [cidadeDestino, setCidadeDestino] = useState<Cidade[]>([]);
 
     const [ loading, setLoading ] = useState<boolean>(false);
-    const [indexMouse, setIndexMouse] = useState<number | null>(null)
+    const [indexMouse, setIndexMouse] = useState<number | null>(null);
 
     async function selectCity(city: string): Promise<void>{
         setQuery(city);
@@ -53,15 +60,13 @@ export default function Formulario() {
         setCidadeOrigem(result.info);
 
         setLoading(false);
-
-        // console.log(result.combustivel);
-    }
+    };
 
     function chooseCity(cidade: Cidade): void {
         setOrigem(cidade);
         setQuery(cidade.nome);
         setCidadeOrigem([]);
-    }
+    };
 
     async function selectCityDestiny(city: string): Promise<void>{
         setQueryDestiny(city);
@@ -77,17 +82,23 @@ export default function Formulario() {
 
         const result = await submitForm(newData);
         setCidadeDestino(result.info);
-    }
+    };
 
     function chooseCityDestiny(cidade: Cidade): void {
         setDestino(cidade);
         setQueryDestiny(cidade.nome);
         setCidadeDestino([]);
-    }
+    };
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
         e.preventDefault();
-        console.log(fuel, veiculoConsumo);
+
+        const newData = new FormData()
+        newData.append("fuelOptions", fuel)
+
+        const preco = await BuscarPrecoCombustivel(newData);
+        setPrice(preco);
+        // console.log(price);
     };
 
 
@@ -95,7 +106,7 @@ export default function Formulario() {
     return (
         <div className="flex flex-1 h-full">
             <form onSubmit={handleSubmit} className="w-full flex flex-col items-center justify-center">
-                <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
+                <div className="flex flex-col w-[80%] md:mt-6" style={{marginBottom: "1.75rem"}}>
                     <label className="mb-4">Digite o local de partida</label>
                     <input
                         value={query}
@@ -174,6 +185,7 @@ export default function Formulario() {
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
                     <label style={{paddingBottom: "0.75rem", display: "block"}}>Qual combustivel o veiculo usa</label>
                     <select 
+                        value={fuel}
                         required 
                         name="fuelOptions" 
                         className="bg-black rounded-xl"
@@ -185,7 +197,7 @@ export default function Formulario() {
                         <option value="" className="bg-black" hidden>tipo de combustivel</option>
                         <option value="Gasolina" className="bg-black">Gasolina (L)</option>
                         <option value="Etanol" className="bg-black">Etanol (L)</option>
-                        <option value="Dielsel" className="bg-black">Dielse (L)</option>
+                        <option value="Diesel" className="bg-black">Dielse (L)</option>
                     </select>
                 </div> 
 
@@ -193,6 +205,7 @@ export default function Formulario() {
                     <label className="mb-4">Consuno do veiculo</label>
                     <input 
                         type="number" 
+                        step="any"
                         name="consumo" 
                         placeholder="Qual o gasto de combustivel do seu veiculo" 
                         style={{padding: '0.7rem 0.75rem', marginTop: "0.7rem"}}
@@ -206,23 +219,48 @@ export default function Formulario() {
 
                 <div className="flex flex-col w-[80%]" style={{marginBottom: "1.75rem"}}>
                     <label className="mb-4 text-sm md:text-base">Capacidade do tanque ( Opcional )</label>
-                    <input type="number" name="capacidade" 
+                    <input 
+                        type="number" 
+                        name="capacidade" 
                         placeholder="Com isso, podemos calcular quantas paradas terá que fazer até o destino final"
                         style={{padding: '0.7rem 0.75rem', marginTop: "0.7rem"}}
                         className="bg-black rounded-sm"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setCapacidadeTanque(Number(e.target.value))
+                        }}
                         />
                 </div>
 
                 {
                     origem && destino && (
-                        <Map 
+                        <>
+                          <Map 
                             latitude={origem.latitude} 
                             longitude={origem?.longitude}
                             latitudeDestino={destino?.latitude}
                             longitudeDestino={destino?.longitude}
                             
                         />
+                        </>
+                      
                         
+                    )
+                }
+
+                {
+                    fuel && price && origem && destino &&(
+                        <>
+                            <InfoLocation
+                                locationFromLat={origem.latitude}
+                                locationFromLlon={origem.longitude}
+                                locationToLat={destino.latitude}
+                                locationToLon={destino.longitude}
+                                fuelPrice={price}
+                                fuel={fuel}
+                                veiculoConsumo={veiculoConsumo}
+                                capacidadeTanque={capacidadeTanque}
+                            />
+                        </>
                     )
                 }
                

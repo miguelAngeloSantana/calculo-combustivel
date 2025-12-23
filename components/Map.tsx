@@ -15,7 +15,7 @@ interface MapPropsType {
   longitudeDestino: number
 };
 
-interface RoutingProps {
+export interface RoutingProps {
   locationFromLat: number
   locationFromLlon: number
   locationToLat: number
@@ -23,16 +23,17 @@ interface RoutingProps {
 }
 
 function Routing({ locationFromLat, locationFromLlon, locationToLat, locationToLon }: RoutingProps) {
+
   const map = useMap();
 
-  const localizacaoOrigem = L.latLng(locationFromLat, locationFromLlon);
-  const localizacaoDestino = L.latLng(locationToLat, locationToLon);
+  // const localizacaoOrigem = L.latLng(locationFromLat, locationFromLlon);
+  // const localizacaoDestino = L.latLng(locationToLat, locationToLon);  
 
-  const distancia = localizacaoOrigem.distanceTo(localizacaoDestino);
+  // const distancia = localizacaoOrigem.distanceTo(localizacaoDestino);
 
-  const convertDisnaticaKm = (distancia / 1000).toFixed(2);
+  // const convertDisnaticaKm = Number((distancia / 1000).toFixed(2));
 
-  console.log(convertDisnaticaKm);
+
 
   useEffect(() => {
     if (!map) return;
@@ -48,7 +49,7 @@ function Routing({ locationFromLat, locationFromLlon, locationToLat, locationToL
      }
   }, [map, locationFromLat, locationFromLlon, locationToLat, locationToLon]);
 
-  return null
+  return null;
 }
 
 export default function Map({ latitude, longitude, latitudeDestino, longitudeDestino}: MapPropsType) {
