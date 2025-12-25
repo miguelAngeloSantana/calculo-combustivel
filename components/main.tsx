@@ -1,7 +1,17 @@
-import Formulario from "./Formulario";
-import ButtonLogin from "./ButtonLogin"
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-export default function Main() {
+import Formulario from "./Formulario";
+import ButtonLogin from "./ButtonLogin";
+import ButtonLogout from "./ButtonLogout";
+
+export default async function Main() {
+
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+
     return (
         <div className="flex flex-col">
             <div className="flex justify-around">
@@ -11,7 +21,7 @@ export default function Main() {
                 </div>
 
                 <div>
-                    <ButtonLogin />
+                    {session? <ButtonLogout />: <ButtonLogin />}
                 </div>
 
             </div>

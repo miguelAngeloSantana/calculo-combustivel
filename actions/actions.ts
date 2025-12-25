@@ -1,6 +1,4 @@
 "use server";
-// import puppeteer from "puppeteer";
-
 
 export interface Cidade {
     id: number 
@@ -9,33 +7,15 @@ export interface Cidade {
     longitude: number
 };
 
-// export async function RobotScraping({fuel}: String) {
-    
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-
-//     const url = `https://precos.petrobras.com.br/sele%C3%A7%C3%A3o-de-estados-${fuel}`
-//     await page.goto(url);
-
-//     const result = await page.evaluate(() => {
-//         return document.querySelector('#telafinal-precofinal.h1.real-value')?.textContent
-//     })
-
-//     console.log(result);
-
-//     await browser.close();
-
-//     return {
-//         info: result
-//     }
-// }
 
 export async function submitForm(formData: FormData) {
 
     const pontoPartida = formData.get("pontoPartida");
-    // const tipoCombustivel = formData.get("fuelOptions");
-    // const consumoVeiculo = formData.get("consumo");
-    // const capacidadeTanque = formData.get("capacidade");
+
+
+    const userName = formData.get("userName");
+    const userEmail = formData.get("userEmail");
+    const userPassword = formData.get("userPassword");
 
     const responseApi = await fetch(`https://nominatim.openstreetmap.org/search?q=${pontoPartida}&format=json`)
         .then(response => response.json());
@@ -47,7 +27,14 @@ export async function submitForm(formData: FormData) {
         longitude: Number(item.lon)
     }));
 
+    const userInfo = {
+        name: userName,
+        email: userEmail,
+        password: userPassword
+    }
+
     return {
-        info: cidades
+        info: cidades,
+        user: userInfo
     };
 };
