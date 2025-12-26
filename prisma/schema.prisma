@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String     @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean    @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   sessions      Session[]
   accounts      Account[]
+  location      Location[]
 
   @@unique([email])
   @@map("user")
@@ -74,4 +75,23 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Location {
+  id                    Int    @id @default(autoincrement())
+  tripId                String @unique @default("")
+  preco_combustivel     Float
+  distancia             Float
+  combustivel           String
+  custoTotal            Float
+  combustivelNecessario Float
+  totParadas            Int
+  origem                String @default("")
+  destino               String @default("")
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("location")
 }

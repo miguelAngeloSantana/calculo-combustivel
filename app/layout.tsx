@@ -28,11 +28,8 @@ export default function RootLayout({
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="conteiner">
-          {/* <div max-w-3x1 mx-auto px-5 md:max-w-2xl lg:max-w-4xl lg:px-10 xl:max-w-6xl> */}
             {children}
-          {/* </div>   */}
         </div>
-        {/* {children} */}
       </body>
     </html>
   );

@@ -26,15 +26,6 @@ function Routing({ locationFromLat, locationFromLlon, locationToLat, locationToL
 
   const map = useMap();
 
-  // const localizacaoOrigem = L.latLng(locationFromLat, locationFromLlon);
-  // const localizacaoDestino = L.latLng(locationToLat, locationToLon);  
-
-  // const distancia = localizacaoOrigem.distanceTo(localizacaoDestino);
-
-  // const convertDisnaticaKm = Number((distancia / 1000).toFixed(2));
-
-
-
   useEffect(() => {
     if (!map) return;
 

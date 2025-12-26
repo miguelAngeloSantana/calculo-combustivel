@@ -1,8 +1,13 @@
-"use client";
-
 import L from "leaflet";
 
+import {UserInfoLocation} from "@/actions/userInfoLocation"
+import { authClient } from "@/lib/auth-client";
+import { useRef } from "react";
+import { v4 as uuid } from "uuid"
+
 interface InfoLocationProps {
+  origem: string,
+  destino: string,
   locationFromLat: number
   locationFromLlon: number
   locationToLat: number
@@ -14,37 +19,54 @@ interface InfoLocationProps {
 };
 
 export default function InfoLocation({ 
-        locationFromLat, 
-        locationFromLlon, 
-        locationToLat, 
-        locationToLon,
-        fuelPrice,
-        fuel,
-        veiculoConsumo,
-        capacidadeTanque
-    }: InfoLocationProps) 
+    origem,
+    destino,
+    locationFromLat, 
+    locationFromLlon, 
+    locationToLat, 
+    locationToLon,
+    fuelPrice,
+    fuel,
+    veiculoConsumo,
+    capacidadeTanque
+  }: InfoLocationProps) 
 {
 
     // const [ precoCombustivel, setPrecoCombustivel ] = useState<number>(0);
-    const fuelPriceType = Number(fuelPrice?.replace(",", ".").trim())
-   const localizacaoOrigem = L.latLng(locationFromLat, locationFromLlon);
-   const localizacaoDestino = L.latLng(locationToLat, locationToLon);  
+  const fuelPriceType = Number(fuelPrice?.replace(",", ".").trim())
+  const localizacaoOrigem = L.latLng(locationFromLat, locationFromLlon);
+  const localizacaoDestino = L.latLng(locationToLat, locationToLon);  
+
+  const distancia = localizacaoOrigem.distanceTo(localizacaoDestino);
+
+  const convertDisnaticaKm = Number((distancia / 1000).toFixed(2));
+
+
+  const combustivelNecessario:number = convertDisnaticaKm / veiculoConsumo;
+  const custoTotal: number = combustivelNecessario * fuelPriceType;
+  const numeroParadas = combustivelNecessario / capacidadeTanque;
+ const tripId = useRef<string>(uuid()); 
+
+  async function handlerGetInfo() {
+      const session = await authClient.useSession();
+  
+      if (!session.data?.user.id) return;
+
+      await UserInfoLocation(session.data.user.id, {
+        tripId: tripId.current,
+        origem: origem,
+        destino: destino,
+        preco_combustivel: fuelPriceType,
+        distancia: convertDisnaticaKm,
+        combustivel: fuel, 
+        custoTotal,
+        combustivelNecessario,
+        totParadas: numeroParadas,
+      })
+        return;
+  }
+  handlerGetInfo() 
  
-   const distancia = localizacaoOrigem.distanceTo(localizacaoDestino);
- 
-   const convertDisnaticaKm = Number((distancia / 1000).toFixed(2));
-
-
-   const combustivelNecessario:number = convertDisnaticaKm / veiculoConsumo;
-   const custoTotal: number = combustivelNecessario * fuelPriceType;
-   const numeroParadas = combustivelNecessario / capacidadeTanque;
-
-   console.log(veiculoConsumo * fuelPriceType)
-
-
-//    console.log(convertDisnaticaKm, fuel,
-//         veiculoConsumo,
-//         capacidadeTanque)
 
    return (
     <>

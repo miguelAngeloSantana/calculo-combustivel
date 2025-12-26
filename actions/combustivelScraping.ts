@@ -1,21 +1,10 @@
 "use server"
 
-// type TipoCombustivel =
-//   | "Gasolina"
-//   | "Etanol"
-//   | "Diesel";
-
 import puppeteer from "puppeteer";
-
-// interface CombustivelProps{
-//     tipo: TipoCombustivel,
-//     preco: number,
-// }
 
 export async function BuscarPrecoCombustivel(formData: FormData) {
     const browser = await puppeteer.launch();
     const fuelOptions = formData.get("fuelOptions")
-    // const page = await browser.newPage();
 
     try {
         const page = await browser.newPage();
@@ -26,8 +15,6 @@ export async function BuscarPrecoCombustivel(formData: FormData) {
         const resultado = await page.evaluate(() => {
             return document.querySelector('#telafinal-precofinal.h1.real-value')?.textContent
         })
-    
-        // console.log(fuelOptions);
         
     
         await browser.close();

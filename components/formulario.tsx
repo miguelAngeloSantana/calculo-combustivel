@@ -4,9 +4,10 @@ import { submitForm } from "@/actions/actions";
 import { BuscarPrecoCombustivel } from "@/actions/combustivelScraping";
 import { useState } from "react";
 
-import InfoLocation from "./InfoLocation"
+// import InfoLocation from "./InfoLocation"
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 interface Cidade {
     id: number 
@@ -16,6 +17,7 @@ interface Cidade {
 };
 
 const Map = dynamic(() => import("./Map"), {ssr: false});
+const InfoLocation = dynamic(() => import("./InfoLocation"), {ssr: false})
 
 export default function Formulario() {
 
@@ -97,6 +99,7 @@ export default function Formulario() {
 
         const preco = await BuscarPrecoCombustivel(newData);
         setPrice(preco);
+
         // console.log(price);
     };
 
@@ -250,6 +253,8 @@ export default function Formulario() {
                     fuel && price && origem && destino &&(
                         <>
                             <InfoLocation
+                                origem={origem.nome}
+                                destino={destino.nome}
                                 locationFromLat={origem.latitude}
                                 locationFromLlon={origem.longitude}
                                 locationToLat={destino.latitude}
@@ -262,8 +267,14 @@ export default function Formulario() {
                         </>
                     )
                 }
-               
-                <ButtonMap />
+               <div>
+
+                <div className="flex items-center justify-between w-[60vw]">
+                    <Link href="/principal">Telha de Perfil</Link>
+                    <ButtonMap />
+                </div>
+
+               </div>
             </form>
         </div>
     )
