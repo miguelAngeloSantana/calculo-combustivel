@@ -4,6 +4,18 @@
 
 Site para estimar o custo do combustivel de uma viagem, alem das quantidades de paradas necessarias para reabastecer
 
+## Tecnlogias utilizadas
+1. NextJS
+2. ReactJS
+3. TypeScript
+4. puppeteer
+5. react-leaflet
+6. TailwindCss
+7. Prisma
+8. PostgreSQL
+9. better-auth
+10. uuid
+
 ## Funções do site
 1. Calcular o preço de diferentes combustiveis
 2. Mostrar quantas paradas serão necessarias beaseado na capacidade do tanque
@@ -40,14 +52,3 @@ Para testar, eu fiz isso manualmente, criando duas contas diferentes com dois de
   <img src="https://github.com/miguelAngeloSantana/calculo-combustivel/blob/main/screenshots/Captura%20de%20ecr%C3%A3%202025-12-26%20154508.png" />
   <img src="https://github.com/miguelAngeloSantana/calculo-combustivel/blob/main/screenshots/Captura%20de%20ecr%C3%A3%202025-12-26%20154521.png" />
 </div>
-
-## Tecnlogias utilizadas
-1. NextJS
-2. ReactJS
-3. TypeScript
-4. puppeteer
-5. react-leaflet
-6. TailwindCss
-7. Prisma
-8. PostgreSQL
-9. better-auth
