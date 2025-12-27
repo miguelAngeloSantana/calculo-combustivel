@@ -30,6 +30,7 @@ Apos iniciar o porjeto e fazer todas as funcionalidades descritas, me veio a ide
 
 Para testar, eu fiz isso manualmente, criando duas contas diferentes com dois destinos diferentes para cada uma e salvando essas informações no banco de dados.
 
+## Telas do site
 <div align="center">
   <img src="https://github.com/miguelAngeloSantana/calculo-combustivel/blob/main/screenshots/Captura%20de%20ecr%C3%A3%202025-12-26%20154300.png" />
   <img src="https://github.com/miguelAngeloSantana/calculo-combustivel/blob/main/screenshots/Captura%20de%20ecr%C3%A3%202025-12-26%20154313.png" />
