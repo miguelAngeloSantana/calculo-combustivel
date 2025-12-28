@@ -55,8 +55,7 @@ export default function LoginForm() {
             onRequest: () => {
 
             }, 
-            onSuccess: (ctx) => {
-                console.log("Cadastrado: ", ctx);
+            onSuccess: () => {
                 router.replace("/principal");
             },
             onError: (ctx) => {

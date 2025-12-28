@@ -44,6 +44,8 @@ export default function Formulario() {
     const [indexMouse, setIndexMouse] = useState<number | null>(null);
 
     async function selectCity(city: string): Promise<void>{
+    //         const teste = await fetch ("https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.gov.br%2Fanp%2Fpt-br%2Fassuntos%2Fprecos-e-defesa-da-concorrencia%2Fprecos%2Fprecos-revenda-e-de-distribuicao-combustiveis%2Fshlp%2Fsemanal%2Fsemanal-municipio-2024-2025.xlsx&wdOrigin=BROWSELINK")
+    // console.log("Testando novo jeito>: ", teste.json())
         setQuery(city);
         setOrigem(null);
 
@@ -97,10 +99,8 @@ export default function Formulario() {
         const newData = new FormData()
         newData.append("fuelOptions", fuel)
 
-        const preco = await BuscarPrecoCombustivel(newData);
-        setPrice(preco);
-
-        // console.log(price);
+        const preco = await BuscarPrecoCombustivel({query: "Petropolis", fuel: "Gasolina"});
+        setPrice(preco?.toString());
     };
 
 
