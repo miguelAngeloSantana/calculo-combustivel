@@ -3,6 +3,7 @@
 export interface Cidade {
     id: number 
     nome: string 
+    display_nome: string 
     latitude: number 
     longitude: number
 };
@@ -25,9 +26,10 @@ export async function submitForm(formData: FormData) {
     })
         .then(response => response.json());
 
-    const cidades: Cidade[] = responseApi.map((item: {place_id: number, display_name: string, lat: number, lon: number}) => ({
+    const cidades: Cidade[] = responseApi.map((item: {place_id: number, name: string, display_name:string, lat: number, lon: number}) => ({
         id: Number(item.place_id),
-        nome: String(item.display_name),
+        nome: String(item.name),
+        display_nome: String(item.display_name),
         latitude: Number(item.lat),
         longitude: Number(item.lon)
     }));

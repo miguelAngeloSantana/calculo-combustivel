@@ -18,7 +18,7 @@ interface InfoLocationProps {
   capacidadeTanque: number
 };
 
-export default function InfoLocation({ 
+export default function InfoLocation({
     origem,
     destino,
     locationFromLat, 

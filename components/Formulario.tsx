@@ -12,6 +12,7 @@ import Link from "next/link";
 interface Cidade {
     id: number 
     nome: string 
+    display_nome: string
     latitude: number 
     longitude: number
 };
@@ -44,8 +45,6 @@ export default function Formulario() {
     const [indexMouse, setIndexMouse] = useState<number | null>(null);
 
     async function selectCity(city: string): Promise<void>{
-    //         const teste = await fetch ("https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.gov.br%2Fanp%2Fpt-br%2Fassuntos%2Fprecos-e-defesa-da-concorrencia%2Fprecos%2Fprecos-revenda-e-de-distribuicao-combustiveis%2Fshlp%2Fsemanal%2Fsemanal-municipio-2024-2025.xlsx&wdOrigin=BROWSELINK")
-    // console.log("Testando novo jeito>: ", teste.json())
         setQuery(city);
         setOrigem(null);
 
@@ -99,7 +98,7 @@ export default function Formulario() {
         const newData = new FormData()
         newData.append("fuelOptions", fuel)
 
-        const preco = await BuscarPrecoCombustivel({query: "Petropolis", fuel: "Gasolina"});
+        const preco = await BuscarPrecoCombustivel({query, fuel});
         setPrice(preco?.toString());
     };
 
@@ -137,7 +136,7 @@ export default function Formulario() {
                                             }}
                                             className="cursor-pointer"
                                         >
-                                            {c.nome}
+                                            {c.display_nome}
                                         </li>
                                     ))
                                 }
@@ -175,7 +174,7 @@ export default function Formulario() {
                                             }}
                                             className="cursor-pointer"
                                         >
-                                            {c.nome}
+                                            {c.display_nome}
                                         </li>
                                     ))
                                 }
@@ -253,7 +252,7 @@ export default function Formulario() {
                     fuel && price && origem && destino &&(
                         <>
                             <InfoLocation
-                                origem={origem.nome}
+                                origem={origem.display_nome}
                                 destino={destino.nome}
                                 locationFromLat={origem.latitude}
                                 locationFromLlon={origem.longitude}
