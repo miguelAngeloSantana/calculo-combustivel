@@ -17,8 +17,17 @@ export async function submitForm(formData: FormData) {
     const userEmail = formData.get("userEmail");
     const userPassword = formData.get("userPassword");
 
-    const responseApi = await fetch(`https://nominatim.openstreetmap.org/search?q=${pontoPartida}&format=json`)
+    const responseApi = await fetch(`https://nominatim.openstreetmap.org/search?q=${pontoPartida}&format=json`, {
+        headers: {
+            "User-Agent": "https://calculocombustivel.vercel.app/"
+        },
+        cache: "no-store"
+    })
         .then(response => response.json());
+
+    if (!responseApi.ok) {
+        throw new Error("Erro ao buscar cidade");
+    }
 
     const cidades: Cidade[] = responseApi.map((item: {place_id: number, display_name: string, lat: number, lon: number}) => ({
         id: Number(item.place_id),
@@ -38,3 +47,5 @@ export async function submitForm(formData: FormData) {
         user: userInfo
     };
 };
+
+export const runtime = "nodejs";
