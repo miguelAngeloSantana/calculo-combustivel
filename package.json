@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "prisma": "^7.2.0", 
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@tailwindcss/cli": "^4.1.17",
@@ -32,8 +33,8 @@
     "@types/pg": "^8.16.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.7",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.0.7",
     "leaflet": "^1.9.4",
     "prisma": "^7.2.0",
     "react-leaflet": "^5.0.0",
