@@ -1,15 +1,9 @@
 "use server"
 
-import chromium from "chrome-aws-lambda";
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer";
 
 export async function BuscarPrecoCombustivel(formData: FormData) {
-    const browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        headless: chromium.headless
-    });
+    const browser = await puppeteer.launch();
     const fuelOptions = formData.get("fuelOptions")
 
     try {
