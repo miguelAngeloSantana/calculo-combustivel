@@ -24,7 +24,7 @@ function normalize(text: string) {
 }
 
 export default async function getPriceAnp( Cidade:string, Combustivel:string):Promise<number | null> {
-    const teste = path.join(process.cwd(), "data", "../Preços semestrais - AUTOMOTIVOS_2025.01.csv");
+    const teste = path.join(process.cwd(), "lib", "preços-semestrais.csv");
     const read = fs.readFileSync(teste, "utf-8");
 
    const parsed = Papa.parse<ANPRow>(read, {
