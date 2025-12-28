@@ -46,5 +46,3 @@ export async function getInfoPrisma(id: string) {
         }
     })
 }
-
-export const runtime = "nodejs";

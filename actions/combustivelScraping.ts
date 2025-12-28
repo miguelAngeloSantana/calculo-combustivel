@@ -26,5 +26,3 @@ export async function BuscarPrecoCombustivel(formData: FormData) {
     }
 
 } 
-
-export const runtime = "nodejs";

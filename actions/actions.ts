@@ -25,10 +25,6 @@ export async function submitForm(formData: FormData) {
     })
         .then(response => response.json());
 
-    if (!responseApi.ok) {
-        throw new Error("Erro ao buscar cidade");
-    }
-
     const cidades: Cidade[] = responseApi.map((item: {place_id: number, display_name: string, lat: number, lon: number}) => ({
         id: Number(item.place_id),
         nome: String(item.display_name),
@@ -47,5 +43,3 @@ export async function submitForm(formData: FormData) {
         user: userInfo
     };
 };
-
-export const runtime = "nodejs";
