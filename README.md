@@ -30,7 +30,7 @@ Site para estimar o custo do combustivel de uma viagem, alem das quantidades de 
 12. WebScraping para pegar o valor do combustivel autualizado
 
 ## Processo 
-Tudo começou quando vi essa postagem do <a href="https://www.linkedin.com/posts/gustavo-endo-3b718b18b_ideias-de-projeto-pra-quem-quer-entrar-na-activity-7195907303189925889-zT7F/?utm_source=share&utm_medium=member_desktop" target="_blank">Linkedin</a> com uma idea de um projeto web sobre calcular o tanto de combustivel necessario para uma viagem.
+Tudo começou quando vi essa postagem do <a href="https://www.linkedin.com/posts/gustavo-endo-3b718b18b_ideias-de-projeto-pra-quem-quer-entrar-na-activity-7195907303189925889-zT7F?utm_source=share&utm_medium=member_desktop&rcm=ACoAADBfyWEB-asfP1etfFloRwDPcLam3P7ptMk" target="_blank">Linkedin</a> com uma idea de um projeto web sobre calcular o tanto de combustivel necessario para uma viagem.
 
 Vendo e querendo fazer esse projeto dar certo, começei buscando a font de dados necessaria para fazen-lo funcionar como deveria, o preço do combustivel mais recente. O jeito que eu achei de conseguir essa infomação foi pegando os arquivos de dados públicos da ANP. Após conseguir esses dados, fiz um prototipo de como ele ficaria no Figma, em paralelo com isso, escrevi as principais funções que o site teria além das telas necessarias para faze-lo funcionar no Notion. Isso me ajudou a ter mais clareza sobre qual função ia ficar em qual tela e como ficaria o fluxo de navegação do usuario entre as navegações.
 
